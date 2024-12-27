@@ -14,7 +14,7 @@ H_ransac = np.array([[1.00185172e+00 , 5.90525082e-03, -2.69083093e+00],
                      [ -2.80163821e-06 , 3.90975620e-06 , 1.00000000e+00]])
 
 # Görüntüleri yükleme
-img1 = cv2.imread('right04.jpg')
+img1 = cv2.imread('left01.jpg')
 img2 = cv2.imread('left02.jpg')
 
 

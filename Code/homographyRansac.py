@@ -117,9 +117,9 @@ def blend_images(img1, img2, H):
 
 # 5. Ana İşlem
 def main():
-    # Görüntüleri yükleme
-    image1_path = "aero1.jpg"
-    image2_path = "aero3.jpg"
+    # Görüntüleri yükleme 
+    image1_path = "images/aero1.jpg"
+    image2_path = "images/aero3.jpg"
 
     img1 = cv2.imread(image1_path, cv2.IMREAD_GRAYSCALE)
     img2 = cv2.imread(image2_path, cv2.IMREAD_GRAYSCALE)
