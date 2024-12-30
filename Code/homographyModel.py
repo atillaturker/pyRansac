@@ -1,10 +1,11 @@
 import numpy as np
 import random
 import cv2
+import matplotlib.pyplot as plt
 
 
 
-def computeHomography(pairs):
+def CalculateHomography(pairs):
     """ Computes the homography matrix given a list of point pairs.
 
     Args:
@@ -13,6 +14,7 @@ def computeHomography(pairs):
     Returns:
         np.ndarray: The computed homography.
     """
+    
     A = []
     for x1, y1, x2, y2 in pairs:
         A.append([x1, y1, 1, 0, 0, 0, -x2 * x1, -x2 * y1, -x2])
@@ -59,11 +61,21 @@ def extract_and_match_keypoints(image1, image2):
     kp2, desc2 = sift.detectAndCompute(image2, None)
 
     # BFMatcher ile eşleşen noktaları bulma
-    matches = cv2.BFMatcher(cv2.NORM_L2, True).match(desc1, desc2)
+    bf = cv2.BFMatcher(cv2.NORM_L2, True)
+    matches = bf.match(desc1, desc2)
 
-    #sort matches by score
-    matches = sorted(matches, key = lambda x:x.distance)
+    # Eşleşmeleri skorlarına göre sırala
+    matches = sorted(matches, key=lambda x: x.distance)
 
+    # Görselleştirme için eşleşmeleri çizdir
+    matches_img = cv2.drawMatches(image1, kp1, image2, kp2, matches[:100], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+
+    # Eşleşmeleri görselleştir
+    plt.figure(figsize=(20, 15))
+    plt.title("Eşleşmeler")
+    plt.imshow(matches_img[..., ::-1])  # BGR'yi RGB'ye dönüştür
+    plt.axis("off")
+    plt.show()
 
     # point_map oluşturma
     point_map = np.array([
@@ -77,8 +89,7 @@ def extract_and_match_keypoints(image1, image2):
 
     return point_map
 
-
-def createPointMap(image1, image2, verbose=True):
+def createPointMap(image1, image2, verbose):
     """Creates a point map of shape (n, 4) where n is the number of matches
     between the two images. Each row contains (x1, y1, x2, y2), where (x1, y1)
     in image1 maps to (x2, y2) in image2.
